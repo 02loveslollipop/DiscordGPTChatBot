@@ -1,11 +1,13 @@
 import os
 import discord
+from frijolito import Bean
 version = "0.01 aplha"
-#Desactivar esta linea al usar en replit
-#my_secret = os.environ['TOKEN']
-#Desactivar esta linea en visual
 
-
+if os.name == 'nt':
+  my_secret = Bean.token
+else:
+  my_secret = os.environ['TOKEN']
+  
 intents = discord.Intents.default()
 intents.message_content = True
 
