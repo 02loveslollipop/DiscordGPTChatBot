@@ -1,10 +1,11 @@
 import os
 import discord
 from frijolito import Bean
-version = "0.01 aplha"
-
+from gtts import gTTS as tts
+version = "0.03 aplha" # Version actual del Bot
+#Comprobacion de en que sistema se esta ejecutando
 if os.name == 'nt':
-  my_secret = Bean.token
+  my_secret = str(Bean.token)
 else:
   my_secret = os.environ['TOKEN']
   
@@ -13,10 +14,12 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
+#variables globales
+beanify = False #si frijolito esta en un canal de voz o no
 
 @client.event
 async def on_ready():
-  print(f'Hola frijolito esta listo como {client.user}')
+  print(f'Frijolito se unio con el tag {client.user}')
 
 
 @client.event
@@ -35,7 +38,50 @@ async def on_message(message):
     )
     
   if message.content.startswith('frijolito.version'):
-    await message.channel.send(version)
+    await message.channel.send('Aqui frijolito, mi version actual es: ' + version)
+    
+  if message.content.startswith('frijolito.join'):
+    if (message.author.voice): # Si la persona esta en el canal
+        channel = message.author.voice.channel
+        try:
+          vc = await channel.connect()
+        except:
+          #vc = message.voice_client
+          print("e")
+        await message.channel.send('Me he unido al canal de voz')
+        beanify = True
+        print("frijolito se ha unido")
+    else: # Pero si no esta en un canal de voz
+        await message.channel.send("Soy frijolito, pero tu lo eres mas,debes estar primero en un canal de voz para poder unirme a el")
+
+  
+  if message.content.startswith('frijolito.leave'):
+    if (message.guild.voice_client): # Si el bot se encuentra en un canal de voz
+      await message.guild.voice_client.disconnect() # Hace que salga del canal
+      await message.channel.send('He salido satisfactoriamente del canal de voz')
+      beanify = False
+    else: # si no esta en un canal de voz
+      await message.channel.send("Soy frijolito, pero tu lo eres mas, no estoy en un canal de voz por lo que no puedo salir")
+  
+  if message.content.startswith('frijolito.say '):
+    if beanify == True:
+      msg = message.content
+      msg = msg[14:]
+      sound = tts(text=msg,lang="es", slow=False)
+      sound.save("tts.mp3")
+      source = await discord.FFmpegOpusAudio.from_probe("tts.mp3", method="fallback")
+      vc.play(source)
+    else:
+      await message.channel.send("Soy frijolito, pero tu lo eres mas, debo estar en un canal de voz para hablar")
+    
+    
+    
+    
+
+      
+
+    
+    
 
 
 client.run(my_secret)

@@ -1,3 +1,4 @@
 import os
 class Bean:
-    token = 'MTA4NDY0MDM1NDU3MTEzNzAyNA.GOKJnT.DilDMU7kGfYivq4o9VJ3Cs1ckFICZB2BckAp2k'
+    with  open('C:\\Users\\Katana GF66 11UC\\Documents\\token.key','r') as file:
+        token = file.read()
