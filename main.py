@@ -43,11 +43,7 @@ async def on_message(message):
   if message.content.startswith('frijolito.join'):
     if (message.author.voice): # Si la persona esta en el canal
         channel = message.author.voice.channel
-        try:
-          vc = await channel.connect()
-        except:
-          #vc = message.voice_client
-          print("e")
+        await channel.connect()
         await message.channel.send('Me he unido al canal de voz')
         beanify = True
         print("frijolito se ha unido")
@@ -65,10 +61,8 @@ async def on_message(message):
   if message.content.startswith('frijolito.say '):
     msg = message.content
     msg = msg[14:]
-    sound = tts(text=msg,lang="es", slow=False)
-    sound.save("tts.mp3")
-    source = await discord.FFmpegPCMAudio('test.mp3')
-    vc.play(source)
+    channel = message.author.voice.channel
+    await channel.send(msg, tts=True)
         
     
     

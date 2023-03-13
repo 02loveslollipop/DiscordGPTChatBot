@@ -309,6 +309,23 @@ optional = false
 python-versions = ">=3.8"
 
 [[package]]
+name = "opencv-python"
+version = "4.7.0.72"
+description = "Wrapper package for OpenCV python bindings."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+numpy = [
+    {version = ">=1.21.2", markers = "python_version >= \"3.10\""},
+    {version = ">=1.21.4", markers = "python_version >= \"3.10\" and platform_system == \"Darwin\""},
+    {version = ">=1.19.3", markers = "python_version >= \"3.6\" and platform_system == \"Linux\" and platform_machine == \"aarch64\" or python_version >= \"3.9\""},
+    {version = ">=1.17.0", markers = "python_version >= \"3.7\""},
+    {version = ">=1.17.3", markers = "python_version >= \"3.8\""},
+]
+
+[[package]]
 name = "packaging"
 version = "23.0"
 description = "Core utilities for Python packages"
@@ -632,7 +649,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10.0,<3.11"
-content-hash = "44b3a143143130e305bd7ed20d045bb37899e80ac88b291c1ff4a7e42d8bd874"
+content-hash = "26282340ee15febd4d3059a1d509cbeae087731eb5d015476347eb3c763ecbe9"
 
 [metadata.files]
 aiohttp = []
@@ -661,6 +678,7 @@ jinja2 = []
 markupsafe = []
 multidict = []
 numpy = []
+opencv-python = []
 packaging = []
 parso = []
 passlib = []
