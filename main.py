@@ -1,9 +1,9 @@
 import os
 import discord
 from frijolito import Bean
-from gtts import gTTS as tts
-version = "0.03 aplha" # Version actual del Bot
+version = "0.1 beta" # Version actual del Bot
 #Comprobacion de en que sistema se esta ejecutando
+copypasta="Albion Online es un mmorpg no lineal, en el que escribes tu propia historia sin limitarte a seguir un camino prefijado. Explora un amplio mundo abierto con 5 biomas únicos, todo cuánto hagas tendrá su repercusión en el mundo, con la economía orientada al jugador de Albion, los jugadores crean prácticamente todo el equipo a partir de los recursos que consiguen, el equipo que llevas define quién eres, cambia de arma y armadura para pasar de caballero a mago, o juega como una mezcla de ambas clases. Aventúrate en el mundo abierto frente a los habitantes y las criaturas de Albion, inicia expediciones o adéntrate en mazmorras en las que encontrarás enemigos aún más difíciles, enfréntate a otros jugadores en encuentros en el mundo abierto, lucha por los territorios o por ciudades enteras en batallas tácticas, relájate en tu isla privada, donde podrás construir un hogar, cultivar cosechas y criar animales, únete a un gremio, todo es mejor cuando se trabaja en grupo. Adéntrate ya en el mundo de Albion y escribe tu propia historia."
 if os.name == 'nt':
   my_secret = str(Bean.token)
 else:
@@ -33,9 +33,7 @@ async def on_message(message):
     )
 
   if message.content.startswith('frijolito.copypasta'):
-    await message.channel.send(
-      "Albion Online es un mmorpg no lineal, en el que escribes tu propia historia sin limitarte a seguir un camino prefijado. Explora un amplio mundo abierto con 5 biomas únicos, todo cuánto hagas tendrá su repercusión en el mundo, con la economía orientada al jugador de Albion, los jugadores crean prácticamente todo el equipo a partir de los recursos que consiguen, el equipo que llevas define quién eres, cambia de arma y armadura para pasar de caballero a mago, o juega como una mezcla de ambas clases. Aventúrate en el mundo abierto frente a los habitantes y las criaturas de Albion, inicia expediciones o adéntrate en mazmorras en las que encontrarás enemigos aún más difíciles, enfréntate a otros jugadores en encuentros en el mundo abierto, lucha por los territorios o por ciudades enteras en batallas tácticas, relájate en tu isla privada, donde podrás construir un hogar, cultivar cosechas y criar animales, únete a un gremio, todo es mejor cuando se trabaja en grupo. Adéntrate ya en el mundo de Albion y escribe tu propia historia."
-    )
+    await message.channel.send(copypasta)
     
   if message.content.startswith('frijolito.version'):
     await message.channel.send('Aqui frijolito, mi version actual es: ' + version)
@@ -43,13 +41,8 @@ async def on_message(message):
   if message.content.startswith('frijolito.join'):
     if (message.author.voice): # Si la persona esta en el canal
         channel = message.author.voice.channel
-        try:
-          vc = await channel.connect()
-        except:
-          #vc = message.voice_client
-          print("e")
+        await channel.connect()
         await message.channel.send('Me he unido al canal de voz')
-        beanify = True
         print("frijolito se ha unido")
     else: # Pero si no esta en un canal de voz
         await message.channel.send("Soy frijolito, pero tu lo eres mas,debes estar primero en un canal de voz para poder unirme a el")
@@ -65,6 +58,8 @@ async def on_message(message):
   if message.content.startswith('frijolito.say '):
     msg = message.content
     msg = msg[14:]
+    if(msg.startswith('copypasta')):
+      msg = copypasta      
     channel = message.author.voice.channel
     await channel.send(msg, tts=True)
         
