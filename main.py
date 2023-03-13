@@ -1,6 +1,5 @@
 import os
 import discord
-import nextcord
 from frijolito import Bean
 from gtts import gTTS as tts
 version = "0.03 aplha" # Version actual del Bot
@@ -60,21 +59,17 @@ async def on_message(message):
     if (message.guild.voice_client): # Si el bot se encuentra en un canal de voz
       await message.guild.voice_client.disconnect() # Hace que salga del canal
       await message.channel.send('He salido satisfactoriamente del canal de voz')
-      beanify = False
     else: # si no esta en un canal de voz
       await message.channel.send("Soy frijolito, pero tu lo eres mas, no estoy en un canal de voz por lo que no puedo salir")
   
   if message.content.startswith('frijolito.say '):
-    if message.guild.voice_client:
-      msg = message.content
-      msg = msg[14:]
-      sound = tts(text=msg,lang="es", slow=False)
-      sound.save("tts.mp3")
-      source = await discord.FFmpegOpusAudio.from_probe("tts.mp3", method="fallback")
-      vc.play(source)
-    else:
-      await message.channel.send("Soy frijolito, pero tu lo eres mas, debo estar en un canal de voz para hablar")
-    
+    msg = message.content
+    msg = msg[14:]
+    sound = tts(text=msg,lang="es", slow=False)
+    sound.save("tts.mp3")
+    source = await discord.FFmpegPCMAudio('test.mp3')
+    vc.play(source)
+        
     
     
     
