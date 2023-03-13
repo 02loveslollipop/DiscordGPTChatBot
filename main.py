@@ -1,6 +1,5 @@
 import os
 import discord
-import nextcord
 from frijolito import Bean
 from gtts import gTTS as tts
 version = "0.03 aplha" # Version actual del Bot
@@ -44,11 +43,7 @@ async def on_message(message):
   if message.content.startswith('frijolito.join'):
     if (message.author.voice): # Si la persona esta en el canal
         channel = message.author.voice.channel
-        try:
-          vc = await channel.connect()
-        except:
-          #vc = message.voice_client
-          print("e")
+        vc = await channel.connect()
         await message.channel.send('Me he unido al canal de voz')
         beanify = True
         print("frijolito se ha unido")
