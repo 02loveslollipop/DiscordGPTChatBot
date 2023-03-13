@@ -215,6 +215,22 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "gtts"
+version = "2.3.1"
+description = "gTTS (Google Text-to-Speech), a Python library and CLI tool to interface with Google Translate text-to-speech API"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+click = ">=7.1,<8.2"
+requests = ">=2.27,<3"
+
+[package.extras]
+docs = ["sphinx", "sphinx-autobuild", "sphinx-rtd-theme", "sphinx-click", "sphinx-mdinclude"]
+tests = ["pytest (>=7.1.3,<7.2.0)", "pytest-cov", "testfixtures"]
+
+[[package]]
 name = "idna"
 version = "3.4"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -291,6 +307,23 @@ description = "Fundamental package for array computing in Python"
 category = "main"
 optional = false
 python-versions = ">=3.8"
+
+[[package]]
+name = "opencv-python"
+version = "4.7.0.72"
+description = "Wrapper package for OpenCV python bindings."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+numpy = [
+    {version = ">=1.21.2", markers = "python_version >= \"3.10\""},
+    {version = ">=1.21.4", markers = "python_version >= \"3.10\" and platform_system == \"Darwin\""},
+    {version = ">=1.19.3", markers = "python_version >= \"3.6\" and platform_system == \"Linux\" and platform_machine == \"aarch64\" or python_version >= \"3.9\""},
+    {version = ">=1.17.0", markers = "python_version >= \"3.7\""},
+    {version = ">=1.17.3", markers = "python_version >= \"3.8\""},
+]
 
 [[package]]
 name = "packaging"
@@ -376,6 +409,14 @@ description = "Cryptographic library for Python"
 category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+
+[[package]]
+name = "pydub"
+version = "0.25.1"
+description = "Manipulate audio with an simple and easy high level interface"
+category = "main"
+optional = false
+python-versions = "*"
 
 [[package]]
 name = "pyflakes"
@@ -608,7 +649,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10.0,<3.11"
-content-hash = "152742b13c7f6846d1f32c57a7a5b88290d8c442b6d5f8131aff1e6a9b919752"
+content-hash = "26282340ee15febd4d3059a1d509cbeae087731eb5d015476347eb3c763ecbe9"
 
 [metadata.files]
 aiohttp = []
@@ -628,6 +669,7 @@ discord = []
 "discord.py" = []
 flask = []
 frozenlist = []
+gtts = []
 idna = []
 iso8601 = []
 itsdangerous = []
@@ -636,6 +678,7 @@ jinja2 = []
 markupsafe = []
 multidict = []
 numpy = []
+opencv-python = []
 packaging = []
 parso = []
 passlib = []
@@ -644,6 +687,7 @@ pluggy = []
 protobuf = []
 pycparser = []
 pycryptodomex = []
+pydub = []
 pyflakes = []
 pyseto = []
 python-lsp-jsonrpc = []
