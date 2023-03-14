@@ -1,7 +1,8 @@
 import os
 import discord
 from frijolito import Bean
-version = "0.1 beta" # Version actual del Bot
+from beanify import Beanify
+version = "0.2 beta" # Version actual del Bot
 #Comprobacion de en que sistema se esta ejecutando
 copypasta="Albion Online es un mmorpg no lineal, en el que escribes tu propia historia sin limitarte a seguir un camino prefijado. Explora un amplio mundo abierto con 5 biomas únicos, todo cuánto hagas tendrá su repercusión en el mundo, con la economía orientada al jugador de Albion, los jugadores crean prácticamente todo el equipo a partir de los recursos que consiguen, el equipo que llevas define quién eres, cambia de arma y armadura para pasar de caballero a mago, o juega como una mezcla de ambas clases. Aventúrate en el mundo abierto frente a los habitantes y las criaturas de Albion, inicia expediciones o adéntrate en mazmorras en las que encontrarás enemigos aún más difíciles, enfréntate a otros jugadores en encuentros en el mundo abierto, lucha por los territorios o por ciudades enteras en batallas tácticas, relájate en tu isla privada, donde podrás construir un hogar, cultivar cosechas y criar animales, únete a un gremio, todo es mejor cuando se trabaja en grupo. Adéntrate ya en el mundo de Albion y escribe tu propia historia."
 if os.name == 'nt':
@@ -13,13 +14,13 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 client = discord.Client(intents=intents)
-
-#variables globales
-#si frijolito esta en un canal de voz o no
+beanify = Beanify()
 
 @client.event
 async def on_ready():
   print(f'Frijolito se unio con el tag {client.user}')
+  
+  
 
 
 @client.event
@@ -60,8 +61,43 @@ async def on_message(message):
     msg = msg[14:]
     if(msg.startswith('copypasta')):
       msg = copypasta      
-    channel = message.author.voice.channel
-    await channel.send(msg, tts=True)
+    try:
+      channel = message.author.voice.channel
+      await channel.send(msg, tts=True)
+    except:
+      await message.channel.send("Soy frijolito, pero tu lo eres mas, no estoy en un canal de voz por lo que no puedo hablar en el")
+    
+
+  if message.content.startswith('frijolito.ask.tts '):
+    msg = message.content
+    msg = msg[18:]
+    await message.channel.send(beanify.ask_frijolito(msg, tts=True))
+    print(beanify.prompt)
+  
+  if message.content.startswith('frijolito.ask '):
+    msg = message.content
+    msg = msg[14:]
+    await message.channel.send(beanify.ask_frijolito(msg))
+    print(beanify.prompt)
+  
+  if message.content.startswith('frijolito.reset'):
+    if(beanify.reset_frijolito()):
+      await message.channel.send("No se ha iniciado ninguna instancia Beanify.ask_frijolito por lo que no se puede ejecutar Beanify.reset_frijolito")
+    else:
+      await message.channel.send("Me he reiniciado satisfactoriamente")
+  
+    if message.content.startswith('frijolito.identity '):
+      msg = message.content
+      msg = msg[19:]
+      if(beanify == None):
+        await message.channel.send("No se ha iniciado ninguna instancia Beanify.ask_frijolito por lo que no se puede ejecutar Beanify.change_frijolito_identity")
+      else:
+        Beanify.change_frijolito_identity(msg)
+        await message.channel.send("He cambiado mi identidad a:" + msg)
+
+  
+
+    
         
     
     
