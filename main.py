@@ -72,13 +72,11 @@ async def on_message(message):
     msg = message.content
     msg = msg[18:]
     await message.channel.send(beanify.ask_frijolito(msg, tts=True))
-    print(beanify.prompt)
   
   if message.content.startswith('frijolito.ask '):
     msg = message.content
     msg = msg[14:]
     await message.channel.send(beanify.ask_frijolito(msg))
-    print(beanify.prompt)
   
   if message.content.startswith('frijolito.reset'):
     if(beanify.reset_frijolito()):
@@ -86,7 +84,7 @@ async def on_message(message):
     else:
       await message.channel.send("Me he reiniciado satisfactoriamente")
   
-    if message.content.startswith('frijolito.identity '):
+    if message.content.startswith('frijolito.__identity__ '):
       msg = message.content
       msg = msg[19:]
       if(beanify == None):
@@ -94,19 +92,5 @@ async def on_message(message):
       else:
         Beanify.change_frijolito_identity(msg)
         await message.channel.send("He cambiado mi identidad a:" + msg)
-
-  
-
-    
         
-    
-    
-    
-
-      
-
-    
-    
-
-
 client.run(my_secret)
