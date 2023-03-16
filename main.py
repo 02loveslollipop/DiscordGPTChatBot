@@ -38,35 +38,6 @@ async def on_message(message):
     
   if message.content.startswith('frijolito.version'):
     await message.channel.send('Aqui frijolito, mi version actual es: ' + version)
-    
-  if message.content.startswith('frijolito.join'):
-    if (message.author.voice): # Si la persona esta en el canal
-        channel = message.author.voice.channel
-        await channel.connect()
-        await message.channel.send('Me he unido al canal de voz')
-        print("frijolito se ha unido")
-    else: # Pero si no esta en un canal de voz
-        await message.channel.send("Soy frijolito, pero tu lo eres mas,debes estar primero en un canal de voz para poder unirme a el")
-
-  
-  if message.content.startswith('frijolito.leave'):
-    if (message.guild.voice_client): # Si el bot se encuentra en un canal de voz
-      await message.guild.voice_client.disconnect() # Hace que salga del canal
-      await message.channel.send('He salido satisfactoriamente del canal de voz')
-    else: # si no esta en un canal de voz
-      await message.channel.send("Soy frijolito, pero tu lo eres mas, no estoy en un canal de voz por lo que no puedo salir")
-  
-  if message.content.startswith('frijolito.say '):
-    msg = message.content
-    msg = msg[14:]
-    if(msg.startswith('copypasta')):
-      msg = copypasta      
-    try:
-      channel = message.author.voice.channel
-      await channel.send(msg, tts=True)
-    except:
-      await message.channel.send("Soy frijolito, pero tu lo eres mas, no estoy en un canal de voz por lo que no puedo hablar en el")
-    
 
   if message.content.startswith('frijolito.ask.tts '):
     msg = message.content
@@ -84,7 +55,7 @@ async def on_message(message):
     else:
       await message.channel.send("Me he reiniciado satisfactoriamente")
   
-    if message.content.startswith('frijolito.__identity__ '):
+    if message.content.startswith('frijolito.changerole '):
       msg = message.content
       msg = msg[19:]
       if(beanify == None):
