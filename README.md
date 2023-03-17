@@ -1,4 +1,4 @@
-# xX_frijolito23_Xx
+# Frijolito discord bot
 ## ATENTION: This repo is probably outdated in the Discord and OpenAI API at some point, so please check for the compatibility
 This is just a demo for a personalize role chatbot for Discord using OpenAI API.
 #
