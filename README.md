@@ -9,7 +9,7 @@ This Python repo implement a chat bot for discord, but it allows to change it ro
 
 1. You must a have a valid OpenAI API key to use it services (The model used is **GPT-3.5-turbo**).
 2. You need a valid Discord bot Token.
-3. a Python environment to run the repo.
+3. A Python environment to run the repo.
 # Setup
 ## 1. Discord and OpenAI setup
 
