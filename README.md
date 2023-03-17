@@ -53,7 +53,7 @@ your_call_sign.hello
 1. Install ``Python 3.9.16`` using the [Python page](https://www.python.org/downloads/release/python-3916/)
 
 2. Clone the repository, you can either download the repository as a [.zip](https://github.com/02loveslollipop/xXfrijolito23Xx/archive/refs/heads/main.zip) and unzip, or clone the repository using git:
-```bash
+```powershell
 git clone https://github.com/02loveslollipop/xXfrijolito23Xx.git
 ```
 
@@ -65,13 +65,13 @@ git clone https://github.com/02loveslollipop/xXfrijolito23Xx.git
 
 5. Now in the root of the repository execute this command to update all the required libraries:
 
-```bash
+```powershell
 pip -r requirements.txt
 ```
 
 6. Then execute the python script in the root of the repository:
 
-```bash
+```powershell
 python main.py
 ```
 
