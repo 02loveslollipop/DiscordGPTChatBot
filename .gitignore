@@ -15,4 +15,4 @@ build/
 .env
 tts.mp3
 .vscode
-xXfrijolito23Xx.code-workspace
+*.code-workspace
