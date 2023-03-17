@@ -94,12 +94,12 @@ In the "Add Tags" section, you can add any relevant tags to help you organize an
 
 5. After the instances is setup access via SSH using the identity file that you use to setup the EC2 instance:
 
-```bash
+```console
 ssh -i "identityfile.pem" ubuntu@your_public_dns.compute-1.amazonaws.com
 ```
 
 6. Install Python 3.9 in the EC2 instance, as this isn't the last release we are going to get it from the deadsnakes PPA:
-```bash
+```console
 sudo apt update
 sudo apt install software-properties-common -y
 sudo add-apt-repository ppa:deadsnakes/ppa 
@@ -110,13 +110,13 @@ sudo apt install python3-pip -y
 
 8. Clone the repository:
 
-```bash
+```console
 git clone https://github.com/02loveslollipop/xXfrijolito23Xx.git
 ```
 
 9. Now let's add our Discord token and OpenAI API key as environment variables in our server, for that open the .bashrc of the user where we are going to execute the script:
 
-```bash
+```console
 nano ~/.bashrc
 ```
 
@@ -129,7 +129,7 @@ export TOKEN="your Discord Bot token"
 
 11. Then execute the .bashrc file to make the environment variables available:
 
-```bash
+```console
 source ~/.bashrc
 ```
 
@@ -137,13 +137,13 @@ source ~/.bashrc
 
 13. Now execute this command to update all the required libraries:
 
-```bash
+```console
 pip -r /path/to/your/repo/requirements.txt
 ```
 
 14. After that let's create a service so every time the system reboot it starts again the script:
 
-```bash
+```console
 sudo nano /etc/systemd/system/discord_bot.service
 ```
 
@@ -165,13 +165,13 @@ WantedBy=multi-user.target
 
 16. Reload the Systemd daemon to recognize the new service:
 
-```bash
+```console
 sudo systemctl enable my-script.service
 ```
 
 17. Enable the service:
 
-```bash
+```console
 sudo systemctl enable discord_bot.service
 ```
 
