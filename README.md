@@ -3,7 +3,7 @@
 > Python script This is just a demo for a personalize role chatbot for Discord using OpenAI API.
 
 ## Intro
-This Python repo implement a chat bot for discord, but it allows to change it role, this will change the way how the GPT model answers the questions, this can even allow it to don't answer a question, or to characterize a certain "personality".
+OpenAI GPT3.5 model allow to change it behavior using custom training and using system role messages, this repository allows to create a Discord Bot using the GPT 3.5 model with a custom role allowing to change the behavior of the answers of the bot.
 
 ## Requirements
 
@@ -36,19 +36,23 @@ This Python repo implement a chat bot for discord, but it allows to change it ro
 
 1. Create a new replit and clone this repository or fork this [Replit](https://replit.com/@02loveslollipop/Frijolito23)
 
-2. Then in the **Tools** menu go to **Secrets**, there you create 2 new enviroment variable:
-    - ``OPEN_AI``: The value will be the OpenAI secret key
+2. Create a copy of ``example_config.yml`` and rename it as ``config.yml`` open it and configure the bot **(A full guide of the config file can be found [here](TODO: add link))**:
 
-    - ``DISCORD``: The value will be the Discord Bot token
+```yaml
+bot:
+  token: "YOUR_DISCORD_KEY" # Paste here the token you got from Discord Developer Portal
 
-4. Now in the [Main.py](https://github.com/02loveslollipop/xXfrijolito23Xx/blob/main/main.py) file you should change the variable ``call_sign`` this will be the preffix for all the commands of the bot
+open_ai:
+  token: "YOUR_OPEN_AI_KEY" # Paste here the OpenAI secret key you got from OpenAI platform
+  role: "You are a helpful assistant." # Change here chatbot's role, this will change it's behavior answering questions
+```
 
-5. Now press **Run**, the first time the Replit execute the  poetry package manager will install the required libraries so it will take a while
+3. Now press **Run**, the first time the Replit execute the  poetry package manager will install the required libraries so it will take a while
 
-6. Now check in your Discord server using the command
+4. Now check in your Discord server using the command
 
 ```discord
-your_call_sign.hello
+your_prefix.hello
 ```
 
 ## 2. Python Script setup - Method 2 (Local Windows)
@@ -59,19 +63,24 @@ your_call_sign.hello
 git clone https://github.com/02loveslollipop/xXfrijolito23Xx.git
 ```
 
-3. create 2 enviroment variables in your system:
-    - ``DISCORD``: it value is the Discord bot token
-    - ``OPEN_AI``: it value is the OpenAI API key
+3. Create a copy of ``example_config.yml`` and rename it as ``config.yml`` open it and configure the bot **(A full guide of the config file can be found [here](TODO: add link))**:
 
-4. Now in the [Main.py](https://github.com/02loveslollipop/xXfrijolito23Xx/blob/main/main.py) file you should change the variable ``call_sign`` this will be the preffix for all the commands of the bot
+```yaml
+bot:
+  token: "YOUR_DISCORD_KEY" # Paste here the token you got from Discord Developer Portal
 
-5. Now in the root of the repository execute this command to update all the required libraries:
+open_ai:
+  token: "YOUR_OPEN_AI_KEY" # Paste here the OpenAI secret key you got from OpenAI platform
+  role: "You are a helpful assistant." # Change here chatbot's role, this will change it's behavior answering questions
+```
+
+4. Now in the root of the repository execute this command to update all the required libraries:
 
 ```powershell
 pip -r requirements.txt
 ```
 
-6. Then execute the python script in the root of the repository:
+5. Then execute the python script in the root of the repository:
 
 ```powershell
 python main.py
@@ -96,12 +105,12 @@ In the "Add Tags" section, you can add any relevant tags to help you organize an
 
 5. After the instances is setup access via SSH using the identity file that you use to setup the EC2 instance:
 
-```console
+```bash
 ssh -i "identityfile.pem" ubuntu@your_public_dns.compute-1.amazonaws.com
 ```
 
 6. Install Python 3.9 in the EC2 instance, as this isn't the last release we are going to get it from the deadsnakes PPA:
-```console
+```bash
 sudo apt update
 sudo apt install software-properties-common -y
 sudo add-apt-repository ppa:deadsnakes/ppa 
@@ -112,44 +121,40 @@ sudo apt install python3-pip -y
 
 8. Clone the repository:
 
-```console
+```bash
 git clone https://github.com/02loveslollipop/xXfrijolito23Xx.git
 ```
 
-9. Now let's add our Discord token and OpenAI API key as environment variables in our server, for that open the .bashrc of the user where we are going to execute the script:
-
-```console
-nano ~/.bashrc
-```
-
-10. Now add the environment variables, and the save the file:
+9. Create a copy of ``example_config.yml`` and rename it as ``config.yml``:
 
 ```bash
-export OPEN_AI="your OpenAI secret key"
-export DISCORD="your Discord Bot token"
+cp example_config.yml config.yml
 ```
 
-11. Then execute the .bashrc file to make the environment variables available:
+10. Open ``config.yml`` and configure the bot **(A full guide of the config file can be found [here](TODO: add link))**:
 
-```console
-source ~/.bashrc
+```yaml
+bot:
+  token: "YOUR_DISCORD_KEY" # Paste here the token you got from Discord Developer Portal
+
+open_ai:
+  token: "YOUR_OPEN_AI_KEY" # Paste here the OpenAI secret key you got from OpenAI platform
+  role: "You are a helpful assistant." # Change here chatbot's role, this will change it's behavior answering questions
 ```
 
-12. Now in the [Main.py](https://github.com/02loveslollipop/xXfrijolito23Xx/blob/main/main.py) file you should change the variable ``call_sign`` this will be the prefix for all the commands of the bot
+11. Now execute this command to update all the required libraries:
 
-13. Now execute this command to update all the required libraries:
-
-```console
+```bash
 pip -r /path/to/your/repo/requirements.txt
 ```
 
-14. After that let's create a service so every time the system reboot it starts again the script:
+12. After that let's create a service so every time the system reboot it starts again the script:
 
-```console
+```bash
 sudo nano /etc/systemd/system/discord_bot.service
 ```
 
-15. In the file write this script, and then save it:
+13. In the file write this script, and then save it:
 
 ```bash
 [Unit]
@@ -165,26 +170,32 @@ User=ubuntu
 WantedBy=multi-user.target
 ```
 
-16. Reload the Systemd daemon to recognize the new service:
+14. Reload the Systemd daemon to recognize the new service:
 
 ```console
 sudo systemctl enable my-script.service
 ```
 
-17. Enable the service:
+15. Enable the service:
 
 ```console
 sudo systemctl enable discord_bot.service
 ```
 
-18. Start the service:
+16. Start the service:
 
 ```bash
 sudo systemctl start dicord_bot.service
 ```
 
-19. Now check in your Discord server using the command
+17. Now check in your Discord server using the command
 
 ```discord
 your_call_sign.hello
 ```
+
+## Discord Commands
+[Full list of commands here](TODO: add link)
+
+## Configuration of config.yml
+[Config.yml configuration guide](TODO: add link)

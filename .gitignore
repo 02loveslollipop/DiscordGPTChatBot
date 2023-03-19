@@ -1,5 +1,7 @@
 *.pyc
 __pycache__/
+/venv
+replit.nix
 .DS_STORE
 .env
 .vscode

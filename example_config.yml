@@ -13,6 +13,7 @@ open_ai:
   role: "You are a helpful assistant." # The role of the bot, this change the behavior of the chat bot
 
 text: #Customize the answers to some commands of the bot
+  help: "This is under build"
   hello: "Hello, i'm ChatBot a Python Discord Bot"
   version: "Hi there, my current release is: 0.9.0 BETA"
   reset_error: "My prompt is empty so i can't reboot"
@@ -24,7 +25,8 @@ text: #Customize the answers to some commands of the bot
     "copypasta_test_3"
   ]
 
-command: 
+command: #customize the command to execute certain functions, the commands can be found in 
+  help: "help"
   hello: "hello" #Respond to your greeting
   copypasta: "copypasta" #Display one of the copypastas in list
   version: "version" #Display current release

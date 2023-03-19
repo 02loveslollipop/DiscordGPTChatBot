@@ -33,11 +33,13 @@ finally:
   open_ai_token = config['open_ai']['token']
   model = config['open_ai']['model']
   role = config['open_ai']['role']
+  help_answer = config['text']['help']
   hello_answer = config['text']['hello']
   version_answer = config['text']['version']
   reset_error = config['text']['reset_error']
   reset_success = config['text']['reset_success']
   role_changed = config['text']['role_changed']
+  hhelp = config['command']['help']
   hello = config['command']['hello']
   copypasta = config['command']['copypasta']
   version = config['command']['version']
@@ -73,6 +75,9 @@ async def on_message(message):
   
   if msg.startswith('.' + hello):
     await message.channel.send(hello_answer)
+  
+  if msg.startswith('.' + hhelp):
+    await message.channel.send(help_answer)
 
   if msg.startswith('.' + copypasta) and n_copypasta > 0:
     await message.channel.send(t_copypasta[random.randint(0,n_copypasta-1)])
