@@ -1,8 +1,8 @@
-# Frijolito discord bot
-## ATENTION: This repo is probably outdated in the Discord and OpenAI API at some point, so please check for the compatibility
-This is just a demo for a personalize role chatbot for Discord using OpenAI API.
-#
-## Overview
+# Discord GPT Chat Bot
+
+> Python script This is just a demo for a personalize role chatbot for Discord using OpenAI API.
+
+## Intro
 This Python repo implement a chat bot for discord, but it allows to change it role, this will change the way how the GPT model answers the questions, this can even allow it to don't answer a question, or to characterize a certain "personality".
 
 ## Requirements
@@ -10,7 +10,9 @@ This Python repo implement a chat bot for discord, but it allows to change it ro
 1. You must a have a valid OpenAI API key to use it services (The model used is **GPT-3.5-turbo**).
 2. You need a valid Discord bot Token.
 3. A Python environment to run the repo.
+
 # Setup
+
 ## 1. Discord and OpenAI setup
 
 1. You need a Discord account, then you have to access to the [Discord Developer Portal](https://discord.com/developers/applications)
@@ -37,7 +39,7 @@ This Python repo implement a chat bot for discord, but it allows to change it ro
 2. Then in the **Tools** menu go to **Secrets**, there you create 2 new enviroment variable:
     - ``OPEN_AI``: The value will be the OpenAI secret key
 
-    - ``TOKEN``: The value will be the Discord Bot token
+    - ``DISCORD``: The value will be the Discord Bot token
 
 4. Now in the [Main.py](https://github.com/02loveslollipop/xXfrijolito23Xx/blob/main/main.py) file you should change the variable ``call_sign`` this will be the preffix for all the commands of the bot
 
@@ -57,9 +59,9 @@ your_call_sign.hello
 git clone https://github.com/02loveslollipop/xXfrijolito23Xx.git
 ```
 
-3. Create 2 files in the parent directory where you clone the repository
-    - ``token.key``: it contains the Discord bot token
-    - ``openai.key``: it contais the OpenAI API key
+3. create 2 enviroment variables in your system:
+    - ``DISCORD``: it value is the Discord bot token
+    - ``OPEN_AI``: it value is the OpenAI API key
 
 4. Now in the [Main.py](https://github.com/02loveslollipop/xXfrijolito23Xx/blob/main/main.py) file you should change the variable ``call_sign`` this will be the preffix for all the commands of the bot
 
@@ -124,7 +126,7 @@ nano ~/.bashrc
 
 ```bash
 export OPEN_AI="your OpenAI secret key"
-export TOKEN="your Discord Bot token"
+export DISCORD="your Discord Bot token"
 ```
 
 11. Then execute the .bashrc file to make the environment variables available:

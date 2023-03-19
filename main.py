@@ -1,65 +1,103 @@
 import os
 import discord
-from frijolito import Bean
-from beanify import Beanify
-version = "0.5 beta" # Bot version
-call_sign = "frijolito" #The prefix of the commands
+import random
+import yaml
+from chatBot import ChatBot
 
-copypasta="Albion Online es un mmorpg no lineal, en el que escribes tu propia historia sin limitarte a seguir un camino prefijado. Explora un amplio mundo abierto con 5 biomas únicos, todo cuánto hagas tendrá su repercusión en el mundo, con la economía orientada al jugador de Albion, los jugadores crean prácticamente todo el equipo a partir de los recursos que consiguen, el equipo que llevas define quién eres, cambia de arma y armadura para pasar de caballero a mago, o juega como una mezcla de ambas clases. Aventúrate en el mundo abierto frente a los habitantes y las criaturas de Albion, inicia expediciones o adéntrate en mazmorras en las que encontrarás enemigos aún más difíciles, enfréntate a otros jugadores en encuentros en el mundo abierto, lucha por los territorios o por ciudades enteras en batallas tácticas, relájate en tu isla privada, donde podrás construir un hogar, cultivar cosechas y criar animales, únete a un gremio, todo es mejor cuando se trabaja en grupo. Adéntrate ya en el mundo de Albion y escribe tu propia historia."
-if os.name == 'nt':
-  my_secret = str(Bean.token)
-else:
-  my_secret = os.environ['TOKEN']
+try:
+  config_file = open('config.yml')
   
+except FileNotFoundError:
+  print("You don't have a config.yml file, using example_config.yml")
+  config_file = open('example_config.yml')
+
+finally:
+  config = yaml.load(config_file, Loader=yaml.FullLoader)
+  prefix = config['bot']['prefix']
+  name = config['bot']['name']
+  bot_token = config['bot']['token']
+  b_ask_tts = config['bot']['use_ask_tts']
+  
+  if(config['bot']['use_short_prefix']):
+    s_prefix = config['bot']['short_prefix']
+    b_s_prefix = True
+  else: 
+    b_s_prefix = False
+    s_prefix = ''
+    
+  if(config['bot']['use_copypasta']):
+    t_copypasta = config['text']['copypasta']
+    n_copypasta = len(t_copypasta)
+  else: n_copypasta = 0
+  
+  open_ai_token = config['open_ai']['token']
+  model = config['open_ai']['model']
+  role = config['open_ai']['role']
+  hello_answer = config['text']['hello']
+  version_answer = config['text']['version']
+  reset_error = config['text']['reset_error']
+  reset_success = config['text']['reset_success']
+  role_changed = config['text']['role_changed']
+  hello = config['command']['hello']
+  copypasta = config['command']['copypasta']
+  version = config['command']['version']
+  ask = config['command']['ask']
+  ask_tts = config['command']['ask_tts']
+  reset = config['command']['reset']
+  change_role = config['command']['change_role']
+    
+l_prefix = len(prefix)
+l_s_prefix = len(s_prefix)
+    
 intents = discord.Intents.default()
 intents.message_content = True
 
 client = discord.Client(intents=intents)
-beanify = Beanify()
+chatBot = ChatBot(secret=open_ai_token,model=model,role=role)
 
 @client.event
 async def on_ready():
-  print(f'Frijolito se unio con el tag {client.user}')
+  print(f'{name} has join with tag {client.user}')
   
-  
-
-
 @client.event
 async def on_message(message):
   if message.author == client.user:
     return
 
-  if message.content.startswith(call_sign+'.hello'):
-    await message.channel.send(
-      'Hola!, soy frijolito, el mejor NPC de la UPB, ahora implementado en Discord, espero ayudarte en tu dia a dia'
-    )
+  if message.content.startswith(s_prefix+'.') and b_s_prefix:
+    msg = message.content[l_s_prefix:]
+  elif message.content.startswith(prefix+'.'):
+    msg = message.content[l_prefix:]
+  else:
+    return
+  
+  if msg.startswith('.' + hello):
+    await message.channel.send(hello_answer)
 
-  if message.content.startswith(call_sign+'.copypasta'):
-    await message.channel.send(copypasta)
+  if msg.startswith('.' + copypasta) and n_copypasta > 0:
+    await message.channel.send(t_copypasta[random.randint(0,n_copypasta-1)])
     
-  if message.content.startswith(call_sign+'.version'):
-    await message.channel.send('Aqui frijolito, mi version actual es: ' + version)
+  if msg.startswith('.' + version):
+    await message.channel.send(version_answer)
 
-  if message.content.startswith(call_sign+'.ask.tts '):
-    msg = message.content
-    msg = msg[18:]
-    await message.channel.send(beanify.ask_frijolito(msg, tts=True))
+  if msg.startswith('.' + ask + '.' + ask_tts + ' ') and b_ask_tts == True:
+    msg = msg[9:]
+    await message.channel.send(chatBot.ask(msg), tts=True)
   
-  if message.content.startswith(call_sign+'.ask '):
-    msg = message.content
-    msg = msg[14:]
-    await message.channel.send(beanify.ask_frijolito(msg))
+  if msg.startswith('.' + ask + ' '):
+    msg = msg[5:]
+    await message.channel.send(chatBot.ask(msg))
   
-  if message.content.startswith(call_sign+'.reset'):
-    if(beanify.reset_frijolito()):
-      await message.channel.send("No se ha iniciado ninguna instancia Beanify.ask_frijolito por lo que no se puede ejecutar Beanify.reset_frijolito")
+  if msg.startswith('.' + reset):
+    if(chatBot.reset()):
+      await message.channel.send(reset_error)
     else:
-      await message.channel.send("Me he reiniciado satisfactoriamente")
+      await message.channel.send(reset_success)
   
-    if message.content.startswith(call_sign+'.changerole '):
+    if message.content.startswith('.' + change_role):
       msg = message.content
-      msg = msg[19:]
-      Beanify.change_frijolito_identity(msg)
-      await message.channel.send("He cambiado mi rol a:" + msg)
+      msg = msg[12:]
+      chatBot.change_role(msg)
+      await message.channel.send(role_changed + msg)
         
-client.run(my_secret)
+client.run(bot_token)

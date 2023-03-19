@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "frijolito"
-version = "0.1.0"
+name = "DiscordGPTChatBot"
+version = "0.9.0"
 description = ""
-authors = ["02LovesLollipop <mateo.monsalve@boliversal.com>"]
+authors = ["02LovesLollipop <mateo.monsalvev.col@upb.edu.co>"]
 
 [tool.poetry.dependencies]
 python = ">=3.10.0,<3.11"
@@ -15,6 +15,7 @@ gTTS = "^2.3.1"
 pydub = "^0.25.1"
 opencv-python = "^4.7.0"
 openai = "^0.27.2"
+PyYAML = "^6.0.0"
 
 [tool.poetry.dev-dependencies]
 debugpy = "^1.6.2"
