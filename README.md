@@ -195,7 +195,7 @@ your_call_sign.hello
 ```
 
 ## Discord Commands
-[Full list of commands here](TODO: add link)
+[Full list of commands here](https://github.com/02loveslollipop/DiscordGPTChatBot/wiki/Discord-commands)
 
 ## Configuration of config.yml
 [Config.yml configuration guide](TODO: add link)
