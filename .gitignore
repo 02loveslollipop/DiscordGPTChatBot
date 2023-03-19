@@ -8,5 +8,4 @@ replit.nix
 *.code-workspace
 .breakpoints
 config.yml
-poetry.lock
 .replit
