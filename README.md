@@ -1,6 +1,6 @@
 # Discord GPT Chat Bot
 
-> Python script This is just a demo for a personalize role chatbot for Discord using OpenAI API.
+> A Python bases Discord chat bot that uses the OpenAI GPT API with a custom role
 
 ## Intro
 OpenAI GPT3.5 model allow to change it behavior using custom training and using system role messages, this repository allows to create a Discord Bot using the GPT 3.5 model with a custom role allowing to change the behavior of the answers of the bot.
@@ -13,10 +13,39 @@ OpenAI GPT3.5 model allow to change it behavior using custom training and using 
 
 # Quick Setup
 
+1. Install Python 3.9 in your device.
 
+2. Clone the repository: 
 
-## Discord Commands
+```bash
+git clone https://github.com/02loveslollipop/xXfrijolito23Xx.git
+```
+
+3. Create a copy of ``example_config.yml`` and rename it as ``config.yml``, then open it and paste your Discord and OpenAI keys and change the role of the chat bot:
+
+```yaml
+bot:
+  token: "YOUR_DISCORD_KEY" # Paste here the token you got from Discord Developer Portal
+
+open_ai:
+  token: "YOUR_OPEN_AI_KEY" # Paste here the OpenAI secret key you got from OpenAI platform
+  role: "You are a helpful assistant." # Change here chatbot's role, this will change it's behavior answering questions
+```
+
+4. Install requirements:
+
+```bash
+pip -r /path/to/your/repo/requirements.txt
+```
+
+5. Run the bot:
+
+```bash
+python main.py
+```
+
+# Discord Commands
 [Full list of commands here](https://github.com/02loveslollipop/DiscordGPTChatBot/wiki/Discord-commands)
 
-## Configuration of config.yml
+# Configuration of config.yml
 [Config.yml configuration guide](TODO: add link)
