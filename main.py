@@ -49,6 +49,13 @@ finally:
     
 l_prefix = len(prefix)
 l_s_prefix = len(s_prefix)
+l_helo = len(hello)
+l_copypasta = len(copypasta)
+l_version = len(version)
+l_ask = len(ask)
+l_ask_tts = len(ask_tts)
+l_reset = len(reset)
+l_change_role = len(change_role)
     
 intents = discord.Intents.default()
 intents.message_content = True
@@ -85,11 +92,11 @@ async def on_message(message):
     await message.channel.send(version_answer)
 
   if msg.startswith('.' + ask + '.' + ask_tts + ' ') and b_ask_tts == True:
-    msg = msg[9:]
+    msg = msg[l_ask+l_ask_tts+2:]
     await message.channel.send(chatBot.ask(msg), tts=True)
   
   if msg.startswith('.' + ask + ' '):
-    msg = msg[5:]
+    msg = msg[l_ask+2:]
     await message.channel.send(chatBot.ask(msg))
   
   if msg.startswith('.' + reset):
@@ -98,10 +105,10 @@ async def on_message(message):
     else:
       await message.channel.send(reset_success)
   
-    if message.content.startswith('.' + change_role):
-      msg = message.content
-      msg = msg[12:]
-      chatBot.change_role(msg)
-      await message.channel.send(role_changed + msg)
+  if msg.startswith('.' + change_role + ' '):
+    msg = message.content
+    msg = msg[l_change_role+2:]
+    chatBot.change_role(msg)
+    await message.channel.send(role_changed + msg)
         
 client.run(bot_token)

@@ -35,10 +35,7 @@ class ChatBot:
             return False
     
     def change_role(self,role):
-        if(self.n_request == 0):
-            return True
-        else:
-            self.prompt=[{"role": "system", "content": role}]
-            self.n_request == 0
-            return False
+        self.prompt=[{"role": "system", "content": role}]
+        self.n_request == 0
+        return False
 
