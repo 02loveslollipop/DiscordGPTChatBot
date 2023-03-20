@@ -2,12 +2,14 @@ import discord
 import random
 import yaml
 from chatBot import ChatBot
+from console import Console
 
 try:
   config_file = open('config.yml')
+  print(Console.info("Using config.yml"))
   
 except FileNotFoundError:
-  print("You don't have a config.yml file, using example_config.yml")
+  print(Console.warning("You don't have a config.yml file, using example_config.yml"))
   config_file = open('example_config.yml')
 
 finally:
@@ -17,14 +19,14 @@ finally:
   bot_token = config['bot']['token']
   b_ask_tts = config['bot']['use_ask_tts']
   
-  if(config['bot']['use_short_prefix']):
+  if config['bot']['use_short_prefix']:
     s_prefix = config['bot']['short_prefix']
     b_s_prefix = True
   else: 
     b_s_prefix = False
     s_prefix = ''
     
-  if(config['bot']['use_copypasta']):
+  if config['bot']['use_copypasta']:
     t_copypasta = config['text']['copypasta']
     n_copypasta = len(t_copypasta)
   else: n_copypasta = 0
@@ -46,6 +48,28 @@ finally:
   ask_tts = config['command']['ask_tts']
   reset = config['command']['reset']
   change_role = config['command']['change_role']
+  if config['status']['use_status']:
+    use_status = True
+    if config['status']['use_help_command'] and "{help_command}" in config['status']['text']:
+      text = config['status']['text']
+      text = text.format(help_command=(prefix + '.' + hhelp))
+    else:
+      text = config['status']['text']
+    if config['status']['status_type'] == 'game':
+      status = discord.Game(name=text)
+    elif config['status']['status_type'] == 'streaming':
+      url = config['status']['streaming_url']
+      status = discord.Streaming(name=text,url=url)
+    elif config['status']['status_type'] == 'listening':
+      status = discord.Activity(type=discord.ActivityType.listening, name=f(text))
+    elif config['status']['status_type'] == 'watching':
+      status = discord.Activity(type=discord.ActivityType.watching, name=text)
+    else:
+      print(Console.warning("Status configuration isn't right please check it, status will be disable"))
+      use_status = False
+  else: use_status = False
+
+    
     
 l_prefix = len(prefix)
 l_s_prefix = len(s_prefix)
@@ -65,7 +89,14 @@ chatBot = ChatBot(secret=open_ai_token,model=model,role=role)
 
 @client.event
 async def on_ready():
-  print(f'{name} has join with tag {client.user}')
+  if use_status:
+    try:
+      await client.change_presence(activity=status)
+      print(Console.info(f"Status \"{str(status)}\" set succesfuly"))
+    except:
+      print(Console.warning("An error occurr when setting the status, please check config.yml"))
+
+  print(Console.info(f'{name} has join with tag {client.user}'))
   
 @client.event
 async def on_message(message):

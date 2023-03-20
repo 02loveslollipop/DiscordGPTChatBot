@@ -33,4 +33,11 @@ command: #customize the command to execute certain functions, the commands can b
   ask: "ask" #ask something to the chat bot
   ask_tts: "tts" #ask something to the chat bot and the answers will be a tts message
   reset: "reset" #reset the chat history (This can speed up answers and reduce tokens consumption but the bot will lose the context)
-  change_role: "changerole" #change the role of the bot, this change bot's behavior 
+  change_role: "changerole" #change the role of the bot, this change bot's behavior
+
+status:
+  use_status: true # If you want to set a custom status for your bot
+  status_type:  "game" # game: 'Playing' status | streaming: 'Streaming' status | listening: 'Listening' status | watching: 'Watching' status
+  streaming_url: "" #Only use if status_type is streaming
+  use_help_command: True #Only use if you are going to use {help_command} this will show the prefix.help command in the text
+  text: "Genshin Impact | {help_command} for help" # the text that will display in the status, if use_help_command: True, remeber to add {help_command} where you want to display the help command
