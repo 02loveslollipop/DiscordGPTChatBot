@@ -61,7 +61,7 @@ finally:
       url = config['status']['streaming_url']
       status = discord.Streaming(name=text,url=url)
     elif config['status']['status_type'] == 'listening':
-      status = discord.Activity(type=discord.ActivityType.listening, name=f(text))
+      status = discord.Activity(type=discord.ActivityType.listening, name=(text))
     elif config['status']['status_type'] == 'watching':
       status = discord.Activity(type=discord.ActivityType.watching, name=text)
     else:
