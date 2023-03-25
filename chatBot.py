@@ -38,4 +38,3 @@ class ChatBot:
         self.prompt=[{"role": "system", "content": role}]
         self.n_request == 0
         return False
-
