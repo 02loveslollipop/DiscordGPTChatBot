@@ -3,9 +3,6 @@ import random
 import yaml
 from chatBot import ChatBot
 from console import Console
-from text2speech import GoogleCloudTTS
-from text2speech import Gtts
-import traceback
 
 vc = None
 
@@ -47,8 +44,10 @@ finally:
       leave_error = config['text']['leave_error']
       b_use_audio = True
       if config['TTS']['engine'] == "gcloud":
+        from text2speech import GoogleCloudTTS
         tts = GoogleCloudTTS(config['TTS']['model'])
       elif config['TTS']['engine'] == "gtts":
+        from text2speech import Gtts
         tts = Gtts(config['TTS']['language'],config['TTS']['tld'])
     else:
       b_use_audio = False
@@ -94,6 +93,7 @@ finally:
     else: use_status = False
   
   except KeyError as err:
+    import traceback
     print(Console.error(str(type(err))))
     print(Console.error(str(err.args)))
     print(Console.error(str(traceback.format_exc())))
