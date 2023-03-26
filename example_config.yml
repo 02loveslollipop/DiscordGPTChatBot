@@ -6,6 +6,7 @@ bot:
   short_prefix: "cb" #A short freffix for the bot
   use_copypasta: true #If you don't want this command set False
   use_ask_tts: true  #If you don't want this command set False
+  use_audio: true
 
 open_ai:
   token: "YOUR_OPEN_AI_KEY" # OpenAI key from OpenAI Developer Account https://platform.openai.com/account/api-keys
@@ -19,6 +20,10 @@ text: #Customize the answers to some commands of the bot
   reset_error: "My prompt is empty so i can't reboot"
   reset_success: "I have rebooted successfully"
   role_changed: "I changed my role to "
+  join_error: "I can't join because you are not currently in a voice chat"
+  join_success: "Successfuly joined the voice chat"
+  leave_error: "Soy frijolito, pero tu lo eres mas, no estoy en un canal de voz por lo que no puedo salir"
+  leave_success: "He salido satisfactoriamente del canal de voz"
   copypasta: [
     "copypasta_test_1",
     "copypasta_test_2",
@@ -30,10 +35,13 @@ command: #customize the command to execute certain functions, the commands can b
   hello: "hello" #Respond to your greeting
   copypasta: "copypasta" #Display one of the copypastas in list
   version: "version" #Display current release
-  ask: "ask" #ask something to the chat bot
-  ask_tts: "tts" #ask something to the chat bot and the answers will be a tts message
-  reset: "reset" #reset the chat history (This can speed up answers and reduce tokens consumption but the bot will lose the context)
+  ask: "ask" #Ask something to the chat bot
+  ask_tts: "tts" #Ask something to the chat bot and the answers will be a tts message
+  reset: "reset" #Reset the chat history (This can speed up answers and reduce tokens consumption but the bot will lose the context)
   change_role: "changerole" #change the role of the bot, this change bot's behavior
+  join: "join" #Join to the voice channel where the user that calls the command is currently
+  leave: "leave" #Leave the voice channel
+  ask_voice: "voice" #Ask something to the chat bot and the answers will be a voice answer in the current channel
 
 status:
   use_status: true # If you want to set a custom status for your bot
@@ -41,3 +49,11 @@ status:
   streaming_url: "" #Only use if status_type is streaming
   use_help_command: True #Only use if you are going to use {help_command} this will show the prefix.help command in the text
   text: "Genshin Impact | {help_command} for help" # the text that will display in the status, if use_help_command: True, remeber to add {help_command} where you want to display the help command
+
+
+TTS:
+  engine: "gcloud" #if glocud the bot will use gcloud for the TTS you must setup gcloud on your device using gcloud, if gtts the bot will use gtts for the TTS
+  model: "en-US-Standard-C" #change this only if you are using gcloud, check all the models in https://cloud.google.com/text-to-speech/docs/voices
+  language: "en" #change this only if using gtts, check all the language in https://gtts.readthedocs.io/en/latest/module.html#localized-accents
+  tld: "us" #change this only if using gtts, check the TLD in https://gtts.readthedocs.io/en/latest/module.html#localized-accents
+  
