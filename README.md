@@ -10,7 +10,7 @@ OpenAI GPT3.5 model allow to change it behavior using custom training and using 
 1. You must a have a valid OpenAI API key to use it services (Currently using **GPT-3.5-turbo**).
 2. You need a valid Discord bot Token.
 3. A Python environment to run the repo.
-4. If you want to use voice related commands you need FFMPEG on the device that will run the bot
+4. If you want to use voice related commands you need FFmpeg on the device that will run the bot
 
 # Quick Setup
 
@@ -24,7 +24,7 @@ Full setup guide available in [Setup guide](https://github.com/02loveslollipop/D
 git clone https://github.com/02loveslollipop/xXfrijolito23Xx.git
 ```
 
-3. Install FFMPEG on your device, ffmpeg can be install [here](https://ffmpeg.org/)
+3. Install FFmpeg on your device, FFmpeg can be install [here](https://ffmpeg.org/)
 
 
 4. Create a copy of ``example_config.yml`` and rename it as ``config.yml``, then open it and paste your Discord and OpenAI keys and change the role of the chat bot (Full description of [config.yml](https://github.com/02loveslollipop/DiscordGPTChatBot/wiki/Structure-of-config.yml)):
