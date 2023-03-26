@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "DiscordGPTChatBot"
-version = "1.0.0"
+version = "2.0.0"
 description = "A Python based Discord chat bot that uses the OpenAI GPT API with a custom role"
 authors = ["ZeroTwoReallyLovesLollipop <02loveslollipop@boliversal.com>"]
 
@@ -13,7 +13,7 @@ urllib3 = "^1.26.12"
 discord = "^2.2.2"
 openai = "^0.27.2"
 PyYAML = "^6.0"
-google-cloud-speech = "^2.18.0"
+google.cloud.texttospeech = "^2.14.1"
 gTTS = "^2.3.1"
 
 [tool.poetry.dev-dependencies]
