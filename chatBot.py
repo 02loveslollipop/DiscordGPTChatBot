@@ -2,7 +2,7 @@ class ChatBot:
     
     import openai
     
-    def __init__(self,secret,model,role):
+    def __init__(self,secret: str,model: str,role: str):
         self.openai.api_key = secret
         self.role = role
         self.model = model
@@ -12,7 +12,7 @@ class ChatBot:
         self.n_request = 0
         
     
-    def ask(self,message):
+    def ask(self,message: str):
         self.prompt.append({"role": "user", "content": message})
         response = self.openai.ChatCompletion.create(
             model=self.model,
@@ -34,8 +34,6 @@ class ChatBot:
             self.n_request == 0
             return False
     
-    def change_role(self,role):
+    def change_role(self,role: str):
         self.prompt=[{"role": "system", "content": role}]
         self.n_request == 0
-        return False
-
