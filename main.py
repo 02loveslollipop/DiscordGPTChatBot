@@ -57,6 +57,7 @@ finally:
     open_ai_token = config['open_ai']['token']
     model = config['open_ai']['model']
     role = config['open_ai']['role']
+    temperature = config['open_ai']['temperature']
     help_answer = config['text']['help']
     hello_answer = config['text']['hello']
     version_answer = config['text']['version']
@@ -117,7 +118,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 client = discord.Client(intents=intents)
-chatBot = ChatBot(secret=open_ai_token,model=model,role=role)
+chatBot = ChatBot(secret=open_ai_token,model=model,role=role,temperature=temperature)
 
 @client.event
 async def on_ready():

@@ -11,6 +11,7 @@ bot:
 open_ai:
   token: "YOUR_OPEN_AI_KEY" # OpenAI key from OpenAI Developer Account https://platform.openai.com/account/api-keys
   model: "gpt-3.5-turbo"  # The model that you want to use
+  temperature: "2"
   role: "You are a helpful assistant." # The role of the bot, this change the behavior of the chat bot
 
 text: #Customize the answers to some commands of the bot
