@@ -13,6 +13,9 @@ class ChatBot:
         self.n_request = 0
         
     
+    def sendChatCompletition(self):
+        
+    
     def ask(self,message: str):
         self.prompt.append({"role": "user", "content": message})
         response = self.openai.ChatCompletion.create(
