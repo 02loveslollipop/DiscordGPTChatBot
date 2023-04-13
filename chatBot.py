@@ -1,6 +1,7 @@
 class ChatBot:
     
     import openai
+    from chatRequest import ChatRequest
     
     def __init__(self,secret: str,model: str,role: str,temperature: int):
         self.tempeerature = temperature
@@ -11,34 +12,40 @@ class ChatBot:
                     {"role": "system", "content": self.role}
                 ]
         self.n_request = 0
+        self.pendingMessage = []
         
-    
     def sendChatCompletition(self):
-        
-    
-    def ask(self,message: str):
-        self.prompt.append({"role": "user", "content": message})
+        CurrentMessage = self.pendingMessage[0]
+        self.prompt.append({"role": "user", "content": CurrentMessage.message})
+        self.pendingMessage.pop(0)
         response = self.openai.ChatCompletion.create(
-            model=self.model,
-            messages=self.prompt,
-            temperature=self.temperature
+        model=self.model,
+        messages=self.prompt,
+        temperature=self.temperature
         )
-        self.n_request+=1
+        self.n_request -= 1
         result = ''
         for choice in response.choices:
             result += choice.message.content
-
         self.prompt.append({"role": "assistant", "content": result})
-        return result
-    
+        CurrentMessage.response = result
+        return self.ChatRequest(CurrentMessage)
+
+
+# la idea es que pueda poner varios mensajes, y que el bot pueda analizar todo, lo
+
+    def ask(self,message: str,tts: bool,discordMessage):
+        newChatRequest = self.ChatRequest(message=message,discordMessage=discordMessage,tts=tts)
+        self.pendingMessage.append(newChatRequest)
+        self.n_request += 1
+            
     def reset(self):
-        if(self.n_request == 0):
-            return True
-        else:
-            self.prompt=[{"role": "system", "content": self.role}]
-            self.n_request == 0
-            return False
+        self.prompt=[{"role": "system", "content": self.role}]
+        self.pendingMessage = []
+        self.n_request == 0
+        return False
     
     def change_role(self,role: str):
         self.prompt=[{"role": "system", "content": role}]
+        self.pendingMessage = []
         self.n_request == 0

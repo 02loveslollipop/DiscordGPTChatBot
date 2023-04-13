@@ -3,8 +3,28 @@ import random
 import yaml
 from chatBot import ChatBot
 from console import Console
+from chatRequest import ChatRequest
+import time
+import asyncio
 
-vc = None
+async def checkQueue(chatBot: ChatBot):
+  print("Entre")
+  while True:
+    if chatBot.n_request > 0:
+      chatRequest = chatBot.sendChatCompletition()
+      if chatRequest.tts:
+        if (chatRequest.discordMessage.guild.voice_client):
+          source = tts.synth(message=chatRequest.response)
+          #source = await discord.FFmpegOpusAudio.from_probe("tts.wav", method="fallback")
+          chatRequest.discordMessage.guild.voice_client.play(source)
+        else:
+          await chatRequest.discordMessage.channel.send(leave_error)
+      else:
+        await chatRequest.discordMessage.channel.send(chatRequest.response)
+    await asyncio.sleep(10)
+    print("sigo vivo")
+    
+
 
 try:
   config_file = open('config.yml')
@@ -120,6 +140,8 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 chatBot = ChatBot(secret=open_ai_token,model=model,role=role,temperature=temperature)
 
+
+
 @client.event
 async def on_ready():
   if use_status:
@@ -156,21 +178,17 @@ async def on_message(message):
     await message.channel.send(version_answer)
 
   if msg.startswith('.' + ask + '.' + ask_tts + ' ') and b_ask_tts == True:
+    #TODO: hay que reviar esto y ver como organizarlo
     msg = msg[l_ask+l_ask_tts+2:]
     await message.channel.send(chatBot.ask(msg), tts=True)
   
-  if msg.startswith('.' + ask + '.' + ask_voice + ' ') and b_use_audio == True: #TODO: aca estoy trabajando
-    if (message.guild.voice_client):
-      msg = msg[l_ask+l_ask_voice+2:]
-      tts.synth(message=chatBot.ask(msg))
-      source = await discord.FFmpegOpusAudio.from_probe("tts.wav", method="fallback")
-      message.guild.voice_client.play(source)
-    else:
-      await message.channel.send(leave_error)
+  if msg.startswith('.' + ask + '.' + ask_voice + ' ') and b_use_audio == True:
+    msg = msg[l_ask+l_ask_voice+2:]
+    source = chatBot.ask(message=msg,tts=True,discordMessage=message)
   
   if msg.startswith('.' + ask + ' '):
     msg = msg[l_ask+2:]
-    await message.channel.send(chatBot.ask(msg))
+    chatBot.ask(message=msg,discordMessage=message,tts=False)
   
   if msg.startswith('.' + reset):
     if(chatBot.reset()):
@@ -204,3 +222,4 @@ async def on_message(message):
     print(Console.warning("You aren't using audio_related commands, set use_audio: True in config.yml to use it"))
 
 client.run(bot_token)
+asyncio.run(checkQueue(chatBot=chatBot))

@@ -7,7 +7,7 @@ class GoogleCloudTTS:
         self.model = model
         language_code = "-".join(self.model.split("-")[:2])
         self.voice_params = tts.VoiceSelectionParams(language_code=language_code, name=self.model)
-        self.audio_config = tts.AudioConfig(audio_encoding=tts.AudioEncoding.LINEAR16)
+        self.audio_config = tts.AudioConfig(audio_encoding=tts.AudioEncoding.OGG_OPUS)
 
         
     def synth(self,message: str):
@@ -18,7 +18,7 @@ class GoogleCloudTTS:
             voice=self.voice_params,
             audio_config=self.audio_config,
         )
-
+        return response.audio_content
         filename = "tts.wav"
         with open(filename, "wb") as out:
             out.write(response.audio_content)
@@ -30,7 +30,8 @@ class Gtts:
         self.tld = tld
         
     def synth(self,message: str):
-        sound = g_tts(text=message,lang=self.language,tld=self.tld)
+        response = g_tts(text=message,lang=self.language,tld=self.tld)
+        return response.stream()
         sound.save("tts.wav")
         
         
