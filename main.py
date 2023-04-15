@@ -4,222 +4,94 @@ import yaml
 from chatBot import ChatBot
 from console import Console
 from chatRequest import ChatRequest
-import time
-import asyncio
+from queueThread import QueueThread
+from confLoader import ConfLoader
 
-async def checkQueue(chatBot: ChatBot):
-  print("Entre")
-  while True:
-    if chatBot.n_request > 0:
-      chatRequest = chatBot.sendChatCompletition()
-      if chatRequest.tts:
-        if (chatRequest.discordMessage.guild.voice_client):
-          source = tts.synth(message=chatRequest.response)
-          #source = await discord.FFmpegOpusAudio.from_probe("tts.wav", method="fallback")
-          chatRequest.discordMessage.guild.voice_client.play(source)
-        else:
-          await chatRequest.discordMessage.channel.send(leave_error)
-      else:
-        await chatRequest.discordMessage.channel.send(chatRequest.response)
-    await asyncio.sleep(10)
-    print("sigo vivo")
-    
-
-
-try:
-  config_file = open('config.yml')
-  print(Console.info("Using config.yml"))
-  
-except FileNotFoundError:
-  print(Console.warning("You don't have a config.yml file, using example_config.yml"))
-  config_file = open('example_config.yml')
-
-finally:
-  try:
-    config = yaml.load(config_file, Loader=yaml.FullLoader)
-    prefix = config['bot']['prefix']
-    name = config['bot']['name']
-    bot_token = config['bot']['token']
-    b_ask_tts = config['bot']['use_ask_tts']
-    
-    if config['bot']['use_short_prefix']:
-      s_prefix = config['bot']['short_prefix']
-      b_s_prefix = True
-    else: 
-      b_s_prefix = False
-      s_prefix = ''
-
-    if config['bot']['use_copypasta']:
-      t_copypasta = config['text']['copypasta']
-      n_copypasta = len(t_copypasta)
-    else: n_copypasta = 0
-    
-    if config['bot']['use_audio']:
-      join = config['command']['join']
-      leave = config['command']['leave']
-      ask_voice = config['command']['ask_voice']
-      join_error = config['text']['join_error']
-      join_success = config['text']['join_success']
-      leave_success = config['text']['leave_success']
-      leave_error = config['text']['leave_error']
-      b_use_audio = True
-      if config['TTS']['engine'] == "gcloud":
-        from text2speech import GoogleCloudTTS
-        tts = GoogleCloudTTS(config['TTS']['model'])
-      elif config['TTS']['engine'] == "gtts":
-        from text2speech import Gtts
-        tts = Gtts(config['TTS']['language'],config['TTS']['tld'])
-    else:
-      b_use_audio = False
-      join = None
-      leave = None
-      
-    open_ai_token = config['open_ai']['token']
-    model = config['open_ai']['model']
-    role = config['open_ai']['role']
-    temperature = config['open_ai']['temperature']
-    help_answer = config['text']['help']
-    hello_answer = config['text']['hello']
-    version_answer = config['text']['version']
-    reset_error = config['text']['reset_error']
-    reset_success = config['text']['reset_success']
-    role_changed = config['text']['role_changed']
-    hhelp = config['command']['help']
-    hello = config['command']['hello']
-    copypasta = config['command']['copypasta']
-    version = config['command']['version']
-    ask = config['command']['ask']
-    ask_tts = config['command']['ask_tts']
-    reset = config['command']['reset']
-    change_role = config['command']['change_role']
-    if config['status']['use_status']:
-      use_status = True
-      if config['status']['use_help_command'] and "{help_command}" in config['status']['text']:
-        text = config['status']['text']
-        text = text.format(help_command=(prefix + '.' + hhelp))
-      else:
-        text = config['status']['text']
-      if config['status']['status_type'] == 'game':
-        status = discord.Game(name=text)
-      elif config['status']['status_type'] == 'streaming':
-        url = config['status']['streaming_url']
-        status = discord.Streaming(name=text,url=url)
-      elif config['status']['status_type'] == 'listening':
-        status = discord.Activity(type=discord.ActivityType.listening, name=(text))
-      elif config['status']['status_type'] == 'watching':
-        status = discord.Activity(type=discord.ActivityType.watching, name=text)
-      else:
-        print(Console.warning("Status configuration isn't right please check it, status will be disable"))
-        use_status = False
-    else: use_status = False
-  
-  except KeyError as err:
-    import traceback
-    print(Console.error(str(type(err))))
-    print(Console.error(str(err.args)))
-    print(Console.error(str(traceback.format_exc())))
-    print(Console.warning("The bot couldn't start because of a bad configuration in confg.yml, please check your confg.yml"))
-    exit()
-
-l_prefix = len(prefix)
-l_s_prefix = len(s_prefix)
-l_helo = len(hello)
-l_copypasta = len(copypasta)
-l_version = len(version)
-l_ask = len(ask)
-l_ask_tts = len(ask_tts)
-l_reset = len(reset)
-l_change_role = len(change_role)
-l_join = len(join)
-l_leave = len(leave)
-l_ask_voice = len(ask_voice)
-
-intents = discord.Intents.default()
-intents.message_content = True
-
-client = discord.Client(intents=intents)
-chatBot = ChatBot(secret=open_ai_token,model=model,role=role,temperature=temperature)
-
-
+if __name__ == "__main__":
+  config = ConfLoader()
+  intents = discord.Intents.default()
+  intents.message_content = True
+  client = discord.Client(intents=intents)
+  chatBot = ChatBot(secret=config.open_ai_token,model=config.model,role=config.role,temperature=config.temperature)
+  checkQueue = QueueThread(chatBot=chatBot,config=config)
+  checkQueue.start()
 
 @client.event
 async def on_ready():
-  if use_status:
+  if config.use_status:
     try:
-      await client.change_presence(activity=status)
-      print(Console.info(f"Status \"{str(status)}\" set succesfuly"))
+      await client.change_presence(activity=config.status)
+      print(Console.info(f"Status \"{str(config.status)}\" set succesfuly"))
     except:
       print(Console.warning("An error occurr when setting the status, please check config.yml"))
 
-  print(Console.info(f'{name} has join with tag {client.user}'))
+  print(Console.info(f'{config.name} has join with tag {client.user}'))
 
 @client.event
 async def on_message(message):
   if message.author == client.user:
     return
 
-  if message.content.startswith(s_prefix+'.') and b_s_prefix:
-    msg = message.content[l_s_prefix:]
-  elif message.content.startswith(prefix+'.'):
-    msg = message.content[l_prefix:]
+  if message.content.startswith(config.s_prefix+'.') and config.b_s_prefix:
+    msg = message.content[config.l_s_prefix:]
+  elif message.content.startswith(config.prefix+'.'):
+    msg = message.content[config.l_prefix:]
   else:
     return
   
-  if msg.startswith('.' + hello):
-    await message.channel.send(hello_answer)
+  if msg.startswith('.' + config.hello):
+    await message.channel.send(config.hello_answer)
   
-  if msg.startswith('.' + hhelp):
-    await message.channel.send(help_answer)
+  if msg.startswith('.' + config.hhelp):
+    await message.channel.send(config.help_answer)
 
-  if msg.startswith('.' + copypasta) and n_copypasta > 0:
-    await message.channel.send(t_copypasta[random.randint(0,n_copypasta-1)])
+  if msg.startswith('.' + config.copypasta) and config.n_copypasta > 0:
+    await message.channel.send(config.t_copypasta[random.randint(0,config.n_copypasta-1)])
     
-  if msg.startswith('.' + version):
-    await message.channel.send(version_answer)
+  if msg.startswith('.' + config.version):
+    await message.channel.send(config.version_answer)
 
-  if msg.startswith('.' + ask + '.' + ask_tts + ' ') and b_ask_tts == True:
-    #TODO: hay que reviar esto y ver como organizarlo
-    msg = msg[l_ask+l_ask_tts+2:]
+  if msg.startswith('.' + config.ask + '.' + config.ask_tts + ' ') and config.b_ask_tts == True:
+    msg = msg[config.l_ask+config.l_ask_tts+2:]
     await message.channel.send(chatBot.ask(msg), tts=True)
   
-  if msg.startswith('.' + ask + '.' + ask_voice + ' ') and b_use_audio == True:
-    msg = msg[l_ask+l_ask_voice+2:]
+  if msg.startswith('.' + config.ask + '.' + config.ask_voice + ' ') and config.b_use_audio == True:
+    msg = msg[config.l_ask+config.l_ask_voice+2:]
     source = chatBot.ask(message=msg,tts=True,discordMessage=message)
   
-  if msg.startswith('.' + ask + ' '):
-    msg = msg[l_ask+2:]
+  if msg.startswith('.' + config.ask + ' '):
+    msg = msg[config.l_ask+2:]
     chatBot.ask(message=msg,discordMessage=message,tts=False)
   
-  if msg.startswith('.' + reset):
+  if msg.startswith('.' + config.reset):
     if(chatBot.reset()):
-      await message.channel.send(reset_error)
+      await message.channel.send(config.reset_error)
     else:
-      await message.channel.send(reset_success)
+      await message.channel.send(config.reset_success)
   
-  if msg.startswith('.' + change_role + ' '):
+  if msg.startswith('.' + config.change_role + ' '):
     #msg = message.content
-    msg = msg[l_change_role+2:]
+    msg = msg[config.l_change_role+2:]
     chatBot.change_role(msg)
-    await message.channel.send(role_changed + msg)
+    await message.channel.send(config.role_changed + msg)
         
-  if msg.startswith('.' + join) and b_use_audio:
+  if msg.startswith('.' + config.join) and config.b_use_audio:
     if (message.author.voice): 
       channel = message.author.voice.channel
       vc = await channel.connect()
-      await message.channel.send(join_success)
+      await message.channel.send(config.join_success)
     else: 
-        await message.channel.send(join_error)
-  elif b_use_audio == False:
-    print(Console.warning("You aren't using audio_related commands, set use_audio: True in config.yml to use it"+"ERROR EN 1"))
+        await message.channel.send(config.join_error)
+  elif config.b_use_audio == False:
+    print(Console.warning("You aren't using audio_related commands, set use_audio: True in config.yml to use it"))
   
-  if msg.startswith('.' + leave) and b_use_audio:
+  if msg.startswith('.' + config.leave) and config.b_use_audio:
     if (message.guild.voice_client):
       await message.guild.voice_client.disconnect()
-      await message.channel.send('He salido satisfactoriamente del canal de voz')
+      await message.channel.send(config.leave_success)
     else:
-      await message.channel.send("Soy frijolito, pero tu lo eres mas, no estoy en un canal de voz por lo que no puedo salir")
-  elif b_use_audio == False:
+      await message.channel.send(config.join_error)
+  elif config.b_use_audio == False:
     print(Console.warning("You aren't using audio_related commands, set use_audio: True in config.yml to use it"))
 
-client.run(bot_token)
-asyncio.run(checkQueue(chatBot=chatBot))
+client.run(config.bot_token)

@@ -18,7 +18,6 @@ class GoogleCloudTTS:
             voice=self.voice_params,
             audio_config=self.audio_config,
         )
-        return response.audio_content
         filename = "tts.wav"
         with open(filename, "wb") as out:
             out.write(response.audio_content)
