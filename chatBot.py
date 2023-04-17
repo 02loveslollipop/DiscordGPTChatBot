@@ -30,6 +30,7 @@ class ChatBot:
         self.prompt.append({"role": "assistant", "content": result})
         CurrentMessage.response = result
         return CurrentMessage
+            
 
 
 # la idea es que pueda poner varios mensajes, y que el bot pueda analizar todo, lo

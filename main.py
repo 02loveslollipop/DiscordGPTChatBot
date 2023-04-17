@@ -6,6 +6,7 @@ from console import Console
 from chatRequest import ChatRequest
 from queueThread import QueueThread
 from confLoader import ConfLoader
+import asyncio
 
 if __name__ == "__main__":
   config = ConfLoader()
@@ -13,7 +14,8 @@ if __name__ == "__main__":
   intents.message_content = True
   client = discord.Client(intents=intents)
   chatBot = ChatBot(secret=config.open_ai_token,model=config.model,role=config.role,temperature=config.temperature)
-  checkQueue = QueueThread(chatBot=chatBot,config=config)
+  loop = asyncio.get_event_loop()
+  checkQueue = QueueThread(chatBot=chatBot,config=config,mainLoop=loop)
   checkQueue.start()
 
 @client.event
