@@ -15,7 +15,7 @@ if __name__ == "__main__":
   client = discord.Client(intents=intents)
   chatBot = ChatBot(secret=config.open_ai_token,model=config.model,role=config.role,temperature=config.temperature)
   loop = asyncio.get_event_loop()
-  checkQueue = QueueThread(chatBot=chatBot,config=config,mainLoop=loop)
+  checkQueue = QueueThread(chatBot=chatBot,config=config,client=client)
   checkQueue.start()
 
 @client.event

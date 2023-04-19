@@ -8,11 +8,13 @@ from threading import Thread
 from console import Console
 
 class QueueThread:
-    def __init__(self,chatBot: ChatBot,config: ConfLoader,mainLoop):
+    def __init__(self,chatBot: ChatBot,config: ConfLoader,client: discord.Client):
+        milisec = 100
+        self.timeout = (1/milisec)
         self.chatBot = chatBot
         self.config = config
         self.loop = asyncio.get_event_loop()
-        self.mainLoop = mainLoop
+        self.client = client
      
     def checkQueue(self):
         while True:
@@ -21,30 +23,19 @@ class QueueThread:
                 if self.chatRequest.tts:
                     if (self.chatRequest.discordMessage.guild.voice_client):
                         self.config.tts.synth(message=self.chatRequest.response)
-                        #source = self.convertAudioStream()
                         task = self.loop.create_task(discord.FFmpegOpusAudio.from_probe("tts.wav"))
                         source = self.loop.run_until_complete(task)
                         self.chatRequest.discordMessage.guild.voice_client.play(source)
                         
                     else:
-                        print("trying to send response")
-                        mainLooptask = self.mainLoop.create_task(self.chatRequest.discordMessage.channel.send())
-                        source = self.mainLoop.run_until_complete(mainLooptask)
+                        asyncio.run_coroutine_threadsafe(self.sendDiscordMessage(self.config.leave_error,self.chatRequest),self.client.loop)
                         
                 else:
-                    print("trying to send response")
-                    mainLooptask = self.mainLoop.create_task(self.chatRequest.discordMessage.channel.send(self.chatRequest.response))
-                    source = self.mainLoop.run_until_complete(mainLooptask)
-            time.sleep(1)
-            print("sigo")
-    
-    
-        
-    async def sendDiscordMessage(self,message,chatRequest):
+                    asyncio.run_coroutine_threadsafe(self.sendDiscordMessage(self.chatRequest.response,self.chatRequest),self.client.loop)
+            time.sleep(self.timeout)
+
+    async def sendDiscordMessage(self,message: str,chatRequest: ChatRequest):
         await chatRequest.discordMessage.channel.send(message)
-
-
-
 
     def start(self):
             process = Thread(target=self.checkQueue)

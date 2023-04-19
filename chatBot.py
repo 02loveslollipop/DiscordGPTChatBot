@@ -1,7 +1,9 @@
+from chatRequest import ChatRequest
+import openai  
 class ChatBot:
     
-    import openai
-    from chatRequest import ChatRequest
+    
+
     
     def __init__(self,secret: str,model: str,role: str,temperature: int):
         self.temperature = temperature
@@ -18,7 +20,7 @@ class ChatBot:
         CurrentMessage = self.pendingMessage[0]
         self.prompt.append({"role": "user", "content": CurrentMessage.message})
         self.pendingMessage.pop(0)
-        response = self.openai.ChatCompletion.create(
+        response = openai.ChatCompletion.create(
         model=self.model,
         messages=self.prompt#,
         #temperature=self.temperature
@@ -29,14 +31,14 @@ class ChatBot:
             result += choice.message.content
         self.prompt.append({"role": "assistant", "content": result})
         CurrentMessage.response = result
-        return CurrentMessage
+        return ChatRequest(CurrentMessage)
             
 
 
 # la idea es que pueda poner varios mensajes, y que el bot pueda analizar todo, lo
 
     def ask(self,message: str,tts: bool,discordMessage):
-        newChatRequest = self.ChatRequest(message=message,discordMessage=discordMessage,tts=tts)
+        newChatRequest = ChatRequest(message=message,discordMessage=discordMessage,tts=tts)
         self.pendingMessage.append(newChatRequest)
         self.n_request += 1
             
