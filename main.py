@@ -57,7 +57,7 @@ async def on_message(message):
   
   if msg.startswith('.' + config.ask + '.' + config.ask_voice + ' ') and config.b_use_audio == True:
     msg = msg[config.l_ask+config.l_ask_voice+2:]
-    source = chatBot.ask(message=msg,tts=True,discordMessage=message)
+    chatBot.ask(message=msg,tts=True,discordMessage=message)
   
   if msg.startswith('.' + config.ask + ' '):
     msg = msg[config.l_ask+2:]
@@ -78,7 +78,7 @@ async def on_message(message):
   if msg.startswith('.' + config.join) and config.b_use_audio:
     if (message.author.voice): 
       channel = message.author.voice.channel
-      vc = await channel.connect()
+      await channel.connect()
       await message.channel.send(config.join_success)
     else: 
         await message.channel.send(config.join_error)
