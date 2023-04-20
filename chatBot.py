@@ -7,7 +7,7 @@ class ChatBot:
     
     def __init__(self,secret: str,model: str,role: str,temperature: int):
         self.temperature = temperature
-        self.openai.api_key = secret
+        openai.api_key = secret
         self.role = role
         self.model = model
         self.prompt=[
@@ -31,7 +31,7 @@ class ChatBot:
             result += choice.message.content
         self.prompt.append({"role": "assistant", "content": result})
         CurrentMessage.response = result
-        return ChatRequest(CurrentMessage)
+        return CurrentMessage
             
 
 

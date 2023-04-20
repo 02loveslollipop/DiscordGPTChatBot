@@ -4,9 +4,11 @@ bot:
   prefix: "chatbot" #the preffix of the bot
   use_short_prefix: true #Set True if you want to use a short preffix
   short_prefix: "cb" #A short freffix for the bot
+  time_out: 100 #A time_out in ms, that represent the timeout in the QueueThread
   use_copypasta: true #If you don't want this command set False
   use_ask_tts: true  #If you don't want this command set False
-  use_audio: true
+  use_audio: true #This will allow all the audio related commands, this requiere mmpeg (This is not suported by Replit)
+  use_google_cloud_service: True #If true us Google Cloud Text to Speech for this you must setup gCloud on your device and using google cloud isn't free, if False it will use google gTTS a free service that allow Text-To-Speech
 
 open_ai:
   token: "YOUR_OPEN_AI_KEY" # OpenAI key from OpenAI Developer Account https://platform.openai.com/account/api-keys
@@ -22,9 +24,9 @@ text: #Customize the answers to some commands of the bot
   reset_success: "I have rebooted successfully"
   role_changed: "I changed my role to "
   join_error: "I can't join because you are not currently in a voice chat"
-  join_success: "Successfuly joined the voice chat"
-  leave_error: "Soy frijolito, pero tu lo eres mas, no estoy en un canal de voz por lo que no puedo salir"
-  leave_success: "He salido satisfactoriamente del canal de voz"
+  join_success: "Successfully joined the voice chat"
+  leave_error: "I'm not in a voice channel so i can't leave it"
+  leave_success: "I leave the voice channel successfully"
   copypasta: [
     "copypasta_test_1",
     "copypasta_test_2",

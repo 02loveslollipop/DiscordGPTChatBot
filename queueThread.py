@@ -8,9 +8,8 @@ from threading import Thread
 from console import Console
 
 class QueueThread:
-    def __init__(self,chatBot: ChatBot,config: ConfLoader,client: discord.Client):
-        milisec = 100
-        self.timeout = (1/milisec)
+    def __init__(self,chatBot: ChatBot,config: ConfLoader,client: discord.Client,timeOutMS: int = 100):
+        self.timeout = (1/timeOutMS)
         self.chatBot = chatBot
         self.config = config
         self.loop = asyncio.get_event_loop()
@@ -25,7 +24,10 @@ class QueueThread:
                         self.config.tts.synth(message=self.chatRequest.response)
                         task = self.loop.create_task(discord.FFmpegOpusAudio.from_probe("tts.wav"))
                         source = self.loop.run_until_complete(task)
-                        self.chatRequest.discordMessage.guild.voice_client.play(source)
+                        voiceTask = self.loop.create_task(self.sendDiscordVoice(source=source,chatRequest=self.chatRequest))
+                        result = False
+                        while not result:
+                            result = self.loop.run_until_complete(voiceTask)
                         
                     else:
                         asyncio.run_coroutine_threadsafe(self.sendDiscordMessage(self.config.leave_error,self.chatRequest),self.client.loop)
@@ -37,8 +39,20 @@ class QueueThread:
     async def sendDiscordMessage(self,message: str,chatRequest: ChatRequest):
         await chatRequest.discordMessage.channel.send(message)
 
-    def start(self):
+    async def sendDiscordVoice(self,source: discord.FFmpegOpusAudio,chatRequest: ChatRequest):
+        try:
+            chatRequest.discordMessage.guild.voice_client.play(source)
+            while chatRequest.discordMessage.guild.voice_client.is_playing():
+                time.sleep(self.timeout)
+            else:
+                print(Console.info("Voice Output finished successfully"))
+                return True
+        except Exception as e:
+            print(e)
+            return False
+        
+    def run(self):
             process = Thread(target=self.checkQueue)
             process.start()
-            print(Console.info("ChatCompletitionThread initialized succesfuly"))
+            print(Console.info("ChatCompletitionThread initialized successfully"))
         

@@ -18,6 +18,7 @@ class ConfLoader:
                 self.name = config['bot']['name']
                 self.bot_token = config['bot']['token']
                 self.b_ask_tts = config['bot']['use_ask_tts']
+                self.timeout = config['bot']['time_out']
             
                 if config['bot']['use_short_prefix']:
                     self.s_prefix = config['bot']['short_prefix']
