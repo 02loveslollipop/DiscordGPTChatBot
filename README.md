@@ -21,7 +21,7 @@ Full setup guide available at [Setup guide](https://github.com/02loveslollipop/D
 2. Clone the repository: 
 
 ```bash
-git clone https://github.com/02loveslollipop/xXfrijolito23Xx.git
+git clone https://github.com/02loveslollipop/DiscordGPTChatBot.git
 ```
 
 3. Install FFmpeg on your device, FFmpeg can be install [here](https://ffmpeg.org/)
