@@ -10,3 +10,4 @@ replit.nix
 config.yml
 .replit
 tts.wav
+dockerfile
