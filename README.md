@@ -14,7 +14,7 @@ OpenAI GPT3.5 model allow to change it behavior using custom training and using 
 
 # Quick Setup
 
-Full setup guide available in [Setup guide](https://github.com/02loveslollipop/DiscordGPTChatBot/wiki/Setup-guide)
+Full setup guide available at [Setup guide](https://github.com/02loveslollipop/DiscordGPTChatBot/wiki/Setup-guide)
 
 1. Install Python 3.9 in your device.
 
