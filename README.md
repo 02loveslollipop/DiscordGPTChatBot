@@ -4,7 +4,7 @@
 > 
 [![DownloadAMD64](https://img.shields.io/docker/image-size/02loveslollipop/discordgptchatbot/1.0.0amd64?label=AMD64&logo=docker&style=for-the-badge)](https://hub.docker.com/layers/02loveslollipop/discordgptchatbot/1.0.0amd64/images/sha256-c68b237e7b0340fc5eab7a1f016f8de3b650458e38f95e74e2af2638a3897c87)
 [![DownloadARM64](https://img.shields.io/docker/image-size/02loveslollipop/discordgptchatbot/1.0.0arm64?label=ARM64&logo=docker&style=for-the-badge)](https://hub.docker.com/layers/02loveslollipop/discordgptchatbot/1.0.0arm64/images/sha256-391617d8318032a290c6ad942fb6819b96146297e61ad09186200958bb17b18c)
-[![Replit](https://img.shields.io/badge/Run%20it%20on-Replit-orange?style=for-the-badge&logo=replit)](https://hub.docker.com/layers/02loveslollipop/discordgptchatbot/1.0.0arm64/images/sha256-391617d8318032a290c6ad942fb6819b96146297e61ad09186200958bb17b18c)
+[![Replit](https://img.shields.io/badge/Run%20it%20on-Replit-orange?style=for-the-badge&logo=replit)](https://replit.com/@02loveslollipop/DiscordGPTChatBot)
 
 ## Intro
 OpenAI GPT3.5 model allow to change it behavior using custom training and using system role messages, this repository allows to create a Discord Bot using the GPT 3.5 model with a custom role allowing to change the behavior of the answers of the bot.
