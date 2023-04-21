@@ -1,6 +1,7 @@
 # Discord GPT Chat Bot
 
 > A Python based Discord chat bot that uses the OpenAI GPT API with a custom role
+> 
 ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/02loveslollipop/discordgptchatbot?color=blue&label=Download&logo=docker&logoColor=white&style=for-the-badge)
 
 ## Intro
