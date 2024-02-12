@@ -12,3 +12,5 @@ config.yml
 tts.wav
 dockerfile
 audioReceiver.js
+dockerfile
+poetry.lock
