@@ -28,7 +28,8 @@ async def on_ready():
   print(Console.info(f'{config.name} has join with tag {client.user}'))
 
 @client.event
-async def on_message(message):
+
+async def on_message(message: discord.Message):
   if message.author == client.user:
     return
 
@@ -79,6 +80,7 @@ async def on_message(message):
     if (message.author.voice): 
       channel = message.author.voice.channel
       await channel.connect()
+      
       await message.channel.send(config.join_success)
     else: 
         await message.channel.send(config.join_error)
@@ -91,7 +93,7 @@ async def on_message(message):
       await message.channel.send(config.leave_success)
     else:
       await message.channel.send(config.join_error)
-  elif config.b_use_audio == False:
+  elif not config.b_use_audio:
     print(Console.warning("You aren't using audio_related commands, set use_audio: True in config.yml to use it"))
 
 client.run(config.bot_token)
